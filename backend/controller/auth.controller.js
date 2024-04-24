@@ -1,6 +1,6 @@
 const User = require('../models/user.model')
 const bcrypt = require("bcryptjs")
-const json = require("jsonwebtoken")
+const generateTokenAndSetCookies = require('../utils/generateToken.js')
 
 const signUpUser = async (req, res) => {
     try {
@@ -40,6 +40,8 @@ const signUpUser = async (req, res) => {
             profilePic,
         });
 
+
+        await generateTokenAndSetCookies(newUser._id, res)
         res.status(200).json({
             fullName: newUser.fullName,
             username: newUser.username,
