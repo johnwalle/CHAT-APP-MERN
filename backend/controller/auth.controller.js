@@ -43,6 +43,7 @@ const signUpUser = async (req, res) => {
 
         await generateTokenAndSetCookies(newUser._id, res)
         res.status(200).json({
+            id: newUser._id,
             fullName: newUser.fullName,
             username: newUser.username,
             gender: newUser.gender,
@@ -55,7 +56,42 @@ const signUpUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    res.status(200).json({ message: 'Login user' })
+
+    const { username, password } = req.body
+    try {
+        // check if all fields are filled.
+        if (!username || !password) {
+            return res.status(400).json({ error: 'please fill all the fields.' })
+        }
+
+        const user = await User.findOne({ username })
+
+        // check if the username is found 
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid username.' })
+        }
+
+        // check if the passwords match
+
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) {
+            return res.status(400).json({ error: 'Invalid password.' })
+        }
+
+        generateTokenAndSetCookies(user._id, res)
+        res.status(200).json({
+            id: user._id,
+            fullName: user.fullName,
+            username: user.username,
+            gender: user.gender,
+            profilePic: user.profilePic,
+        })
+    } catch (error) {
+        console.error(error, 'Error while the user login.')
+        return res.status(500).json({ error: 'Login failed.' })
+    }
+
 }
 
 
