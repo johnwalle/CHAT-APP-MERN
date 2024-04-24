@@ -1,21 +1,23 @@
-const { Schema, model } = requrie('mongoose')
+const { Schema, model } = require('mongoose');
 
-const messageSchema = Schema({
-    senderID: {
-        type: Schema.Types.objectId,
-        ref: "User",
-        required: true
+const messageSchema = new Schema(
+    {
+        senderID: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+        receiverID: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+        message: {
+            type: String,
+            required: true,
+        },
     },
-    receiverID: {
-        type: Schema.Types.objectId,
-        ref: "User",
-        required: true
-    },
-    message: {
-        type: String,
-        required: true,
-    },
-}, { timestamps: true })
+    { timestamps: true }
+);
 
-
-module.exports = model("Message", messageSchema)
+module.exports = model('Message', messageSchema);
