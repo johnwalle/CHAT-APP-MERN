@@ -62,7 +62,7 @@ const getMessages = async (req, res) => {
 
         const conversation = await Conversation.findOne({
             participants: { $all: [senderID, userToChatId] }
-        }).populate("messages")
+        }).populate("messages")     // THIS WILL REPLACE THE REFERENCE IDS WITH ACTUAL MESSAGES
 
         return res.status(200).json(conversation.messages)
 
