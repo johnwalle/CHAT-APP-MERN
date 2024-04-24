@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const { authRouter } = require("./routes/auth.routes.js");
+const { messageRouter } = require('./routes/message.routes.js');
 require('dotenv').config();
 require("colors");
 
@@ -10,6 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/auth', authRouter);
+app.use('/api/messages', messageRouter);
 
 // Connect with the database
 connectDB();
