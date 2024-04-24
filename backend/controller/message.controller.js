@@ -45,6 +45,8 @@ const sendMessage = async (req, res) => {
             await conversation.save();
         }
 
+        // SOCKET IO FUNCTIONALITY GOES HERE
+
         return res.status(200).json(newMessage);
     } catch (error) {
         console.error('Error while sending:', error);
@@ -52,4 +54,26 @@ const sendMessage = async (req, res) => {
     }
 };
 
-module.exports = sendMessage;
+const getMessages = async (req, res) => {
+
+    try {
+        const { id: userToChatId } = req.params
+        const senderID = req.user._id
+
+        const conversation = await Conversation.findOne({
+            participants: { $all: [senderID, userToChatId] }
+        }).populate("messages")
+
+        return res.status(200).json(conversation.messages)
+
+    } catch (error) {
+        console.error(error, 'Error while getting messages.')
+        return res.status(500).json({ error: 'Internal server error.' })
+    }
+}
+
+
+module.exports = {
+    sendMessage,
+    getMessages
+};
