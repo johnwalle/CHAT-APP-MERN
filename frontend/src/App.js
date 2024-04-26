@@ -3,15 +3,20 @@ import Register from './pages/Register'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import './App.css';
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/'  element={<Login />}/>
-        <Route path='/signup'  element={<Register />}/>
-        <Route path='/home'  element={<Home />}/>
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Register />} />
       </Routes>
+      <Toaster
+        position="bottom-right"
+        reverseOrder={false}
+      />
     </Router>
   );
 }

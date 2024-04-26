@@ -5,6 +5,7 @@ import { IoEyeOffSharp } from 'react-icons/io5';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import useRegister from '../hooks/useRegister';
 
+
 const RegisterPage = () => {
     const [gender, setGender] = useState('');
     const [username, setUsername] = useState('');
@@ -25,23 +26,19 @@ const RegisterPage = () => {
         setShowPassword2(!showPassword2);
     };
 
-    useEffect(() => {
-        if (isLoading) {
-            setUsername('')
-            setPassword('')
-            setFullName("")
-            setConfirmPassword("")
-            setGender("");
-        }
-        inputRef.current.focus()
-    }, [])
+    // useEffect(() => {
+    //     if (isLoading) {
+           
+    //     }
+    //     inputRef.current.focus()
+    // }, [])
 
 
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await (username, fullName, password, confirmPassword, gender)
+        await register(username, fullName, password, confirmPassword, gender, setConfirmPassword,setFullName, setGender, setPassword, setUsername)
     };
 
     return (
@@ -139,11 +136,13 @@ const RegisterPage = () => {
             <div className="flex flex-col items-center justify-center h-screen">
                 <div className="flex items-center justify-center border border-gray-500 px-4 mt-2 py-6 shadow-md rounded-md w-80">
                     <p className="text-sm pr-2">Have an account?</p>
-                    <Link className="text-md text-blue-500 hover:text-blue-700 hover:underline" to="/">
+                    <Link className="text-md text-blue-500 hover:text-blue-700 hover:underline" to="/login">
                         Login
                     </Link>
                 </div>
             </div>
+
+         
         </div>
     );
 };
