@@ -2,10 +2,12 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { useAuthContext } from './useAuthContext';
 
 const useRegister = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { dispatch } = useAuthContext();
 
     const register = async (username, fullName, password, confirmPassword, gender, setConfirmPassword, setFullName, setGender, setPassword, setUsername) => {
         setIsLoading(true);
@@ -42,9 +44,15 @@ const useRegister = () => {
                 setFullName("")
                 setConfirmPassword("")
                 setGender("");
-                navigate('/');
-                console.log('User registered:', userData);
+
                 // Dispatch login action or handle successful registration (e.g., redirect)
+                dispatch({ type: 'LOGIN', payload: userData })
+
+                // store the user  in the localstorage
+                localStorage.setItem('user', JSON.stringify(userData));
+
+                // navigate('/');
+                console.log('User registered:', userData);
             }
         } catch (error) {
             console.error('Registration error:', error);
