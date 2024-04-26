@@ -7,7 +7,7 @@ import { useAuthContext } from './useAuthContext';
 const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const { dispatch } = useAuthContext();
+    const { setUser } = useAuthContext();
 
     const login = async (username, password, setUsername, setPassword) => {
         setIsLoading(true);
@@ -26,15 +26,17 @@ const useLogin = () => {
 
                 // navigate('/');
                 // Dispatch login action or perform any necessary operations
-                dispatch({ type: 'LOGIN', payload: userData })
+                // dispatch({ type: 'LOGIN', payload: userData })
 
                 // Store user data in local storage or state
                 localStorage.setItem('user', JSON.stringify(userData));
 
+                // context
+                setUser(userData)
             }
         } catch (error) {
             console.error("error while logging", error);
-            toast.error(error.response?.data?.message || 'Error while logging in.');
+            toast.error(error.response?.data?.error || 'Error while logging in.');
         }
         setIsLoading(false);
     };

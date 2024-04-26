@@ -6,8 +6,8 @@ import { useAuthContext } from './useAuthContext';
 
 const useRegister = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
-    const { dispatch } = useAuthContext();
+    // const navigate = useNavigate();
+    const { setUser } = useAuthContext();
 
     const register = async (username, fullName, password, confirmPassword, gender, setConfirmPassword, setFullName, setGender, setPassword, setUsername) => {
         setIsLoading(true);
@@ -46,10 +46,13 @@ const useRegister = () => {
                 setGender("");
 
                 // Dispatch login action or handle successful registration (e.g., redirect)
-                dispatch({ type: 'LOGIN', payload: userData })
+                // dispatch({ type: 'LOGIN', payload: userData })
 
                 // store the user  in the localstorage
                 localStorage.setItem('user', JSON.stringify(userData));
+
+                // context
+                setUser(userData)
 
                 // navigate('/');
                 console.log('User registered:', userData);
