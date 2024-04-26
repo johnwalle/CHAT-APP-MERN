@@ -9,7 +9,7 @@ const useRegister = () => {
 
     const register = async (username, fullName, password, confirmPassword, gender, setConfirmPassword, setFullName, setGender, setPassword, setUsername) => {
         setIsLoading(true);
-        console.log("url", process.env.REACT_APP_API_AUTH);
+
         try {
             // Validate passwords
             if (password !== confirmPassword) {

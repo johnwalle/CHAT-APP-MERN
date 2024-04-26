@@ -1,35 +1,41 @@
-import axios from 'axios'
-import { useState } from 'react'
+import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const useLogin = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
-
-    const login = async (username, password) => {
-        setIsLoading(true)
+    const login = async (username, password, setUsername, setPassword) => {
+        setIsLoading(true);
         try {
-            const response = await axios.post(`${process.env.REACT_API_AUTH}/login`, username, password)
-            const userData = response.data
+            const response = await axios.post(`${process.env.REACT_APP_API_AUTH}/login`, {
+                username,
+                password
+            });
 
-            if (response.data === 200) {
-                console.log("user", userData)
-                //dispatch login d
+            const userData = response.data;
 
-                // storage in the local storage
+            if (response.status === 200) {
+                console.log("user", userData);
+                setUsername('');
+                setPassword('');
+                navigate('/');
+                // Dispatch login action or perform any necessary operations
+                // Store user data in local storage or state
             }
         } catch (error) {
-            console.error(error.response.data.message)
-            setError(error.response.data.message || 'error while registering the user.')
+            console.error("error while logging", error);
+            toast.error(error.response?.data?.message || 'Error while logging in.');
         }
-        setIsLoading(false)
-
-    }
-
+        setIsLoading(false);
+    };
 
     return {
-        login, error, isLoading
-    }
-}
+        login,
+        isLoading
+    };
+};
 
-export default useLogin
+export default useLogin;

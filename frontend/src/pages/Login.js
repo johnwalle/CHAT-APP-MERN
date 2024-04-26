@@ -6,11 +6,12 @@ import '../App.css';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import useLogin from '../hooks/useLogin';
 
+
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState('');
     const inputRef = useRef();
-    const { login, isLoading, error } = useLogin()
+    const { login, isLoading } = useLogin()
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -20,18 +21,14 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(username, password);
+        await login(username, password, setUsername, setPassword);
     };
 
+
     useEffect(() => {
-
-        if (isLoading) {
-            setUsername('')
-            setPassword('')
-        }
-
         inputRef.current.focus();
     }, []);
+
 
     return (
         <div className="flex flex-col mt-4 items-center justify-center h-screen">
