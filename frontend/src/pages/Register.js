@@ -1,8 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdRemoveRedEye } from 'react-icons/md';
 import { IoEyeOffSharp } from 'react-icons/io5';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import useRegister from '../hooks/useRegister';
 
 const RegisterPage = () => {
     const [gender, setGender] = useState('');
@@ -11,6 +12,8 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const inputRef = useRef();
+
+    const { error, isLoading, register } = useRegister()
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
@@ -22,8 +25,23 @@ const RegisterPage = () => {
         setShowPassword2(!showPassword2);
     };
 
+    useEffect(() => {
+        if (isLoading) {
+            setUsername('')
+            setPassword('')
+            setFullName("")
+            setConfirmPassword("")
+            setGender("");
+        }
+        inputRef.current.focus()
+    }, [])
+
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        await (username, fullName, password, confirmPassword, gender)
     };
 
     return (
@@ -38,6 +56,7 @@ const RegisterPage = () => {
                         required
                         placeholder="full name"
                         value={fullName}
+                        ref={inputRef}
                         onChange={(e) => setFullName(e.target.value)}
                         className="w-full p-2 mb-4 border border-gray-300 rounded"
                         style={{ fontSize: '14px' }}
@@ -102,9 +121,18 @@ const RegisterPage = () => {
                     </div>
                     <button
                         type="submit"
+                        disabled={isLoading}
                         className="bg-blue-500 text-center w-full hover:bg-blue-600 text-white font-semibold py-2 rounded mt-4 relative"
                     >
-                        Sign up
+                        {isLoading ? (
+                            <div className="flex items-center justify-center">
+                                <div className="animate-spin">
+                                    <AiOutlineLoading3Quarters className="text-xl" />
+                                </div>
+                            </div>
+                        ) : (
+                            "Sign Up"
+                        )}
                     </button>
                 </form>
             </div>

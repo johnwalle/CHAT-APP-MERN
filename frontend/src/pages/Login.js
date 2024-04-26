@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom';
 import { MdRemoveRedEye } from 'react-icons/md';
 import { IoEyeOffSharp } from 'react-icons/io5';
 import '../App.css';
-// import useLogin from '../hooks/useLogin';
-// import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import useLogin from '../hooks/useLogin';
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState('');
     const inputRef = useRef();
+    const { login, isLoading, error } = useLogin()
 
     const [showPassword, setShowPassword] = useState(false);
-    // const { login, error, isLoading } = useLogin();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -20,17 +20,23 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // await login(emailOrUsername, password, setEmailOrUsername, setPassword);
+        await login(username, password);
     };
 
     useEffect(() => {
+
+        if (isLoading) {
+            setUsername('')
+            setPassword('')
+        }
+
         inputRef.current.focus();
     }, []);
 
     return (
         <div className="flex flex-col mt-4 items-center justify-center h-screen">
             <div className="bg-white px-6 py-8 shadow-md rounded-md w-80">
-                <h2 className="instagarm-heading text-center text-4xl font-bold mb-6">Instagarm</h2>
+                <h2 className="instagarm-heading text-center  text-4xl font-bold -mt-2 mb-6">Login</h2>
                 <hr className="pb-6" />
                 {/* {error && (
                     <div className="border border-red-600 text-sm text-red-600 py-2 text-center rounded-lg mb-4">
@@ -75,9 +81,17 @@ const LoginPage = () => {
                     <button
                         type="submit"
                         className="bg-blue-500 text-center w-full hover:bg-blue-600 text-white font-semibold py-2 rounded mt-4 relative"
-                    // disabled={isLoading}
+                        disabled={isLoading}
                     >
-                        Login
+                        {isLoading ? (
+                            <div className="flex items-center justify-center">
+                                <div className="animate-spin">
+                                    <AiOutlineLoading3Quarters className="text-xl" />
+                                </div>
+                            </div>
+                        ) : (
+                            "Login"
+                        )}
                     </button>
                 </form>
             </div>
